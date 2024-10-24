@@ -18,6 +18,7 @@ use App\Http\Controllers\UserController; // Pastikan Anda mengimpor UserControll
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/profile', [UserController::class, 'profile'])->name('profile');
 
 // Rute untuk menampilkan formulir pembuatan pengguna
 Route::get('/user/create', [UserController::class, 'create']);

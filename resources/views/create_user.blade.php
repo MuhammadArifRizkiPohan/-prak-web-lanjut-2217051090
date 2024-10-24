@@ -58,25 +58,31 @@
 <body>
     <div class="container">
         <h1>Create User</h1>
-        <form action="{{ route('user.store') }}" method="POST">
-            @csrf
-            <div class="form-group">
-                <label for="nama">Nama:</label>
-                <input type="text" name="nama" id="nama" class="form-control" required>
-            </div>
+        <form action="{{ route('user.store') }}" method="POST" onsubmit="return validateForm()">
+    @csrf
+    <div class="form-group">
+        <label for="nama">Nama:</label>
+        <input type="text" name="nama" id="nama" class="form-control" required minlength="3" maxlength="255">
+    </div>
 
-            <div class="form-group">
-                <label for="npm">NPM:</label>
-                <input type="text" name="npm" id="npm" class="form-control" required>
-            </div>
+    <div class="form-group">
+        <label for="npm">NPM:</label>
+        <input type="text" name="npm" id="npm" class="form-control" required pattern="\d{8}" title="NPM harus terdiri dari 8 digit angka">
+    </div>
 
-            <div class="form-group">
-                <label for="kelas">Kelas:</label>
-                <input type="text" name="kelas" id="kelas" class="form-control" required>
-            </div>
+    <div class="form-group">
+        <label for="kelas_id">Kelas:</label>
+        <select name="kelas_id" id="kelas_id" class="form-control" required>
+            <option value="">Pilih Kelas</option>
+            @foreach ($kelas as $kelasItem)
+                <option value="{{ $kelasItem->id }}">{{ $kelasItem->nama_kelas }}</option>
+            @endforeach
+        </select>
+    </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

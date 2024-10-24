@@ -52,17 +52,13 @@
     <div class="container">
         <div class="profile-container">
         <img src="{{ asset('storage/images/profil.JPG') }}" alt="Profile Picture" class="profile-image">
-            <div class="profile-info">
-                <div class="info-item">
-                    <label>Nama: </label> <?= $nama ?>
-                </div>
-                <div class="info-item">
-                    <label>Kelas: </label> <?= $kelas ?>
-                </div>
-                <div class="info-item">
-                    <label>NPM: </label> <?= $npm ?>
-                </div>
-            </div>
+        <div class="container">
+        <h1>User Profile</h1>
+        <p>Nama: {{ $nama }}</p>
+        <p>NPM: {{ $npm }}</p>
+        <p>Kelas: {{ $nama_kelas ?? 'Kelas tidak ditemukan' }}</p>
+        
+    </div>
         </div>
     </div>
 

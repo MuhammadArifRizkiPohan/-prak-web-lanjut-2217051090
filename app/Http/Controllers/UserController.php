@@ -3,44 +3,52 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Kelas; 
+use App\Models\User; 
+use App\Models\UserModel;
 
 class UserController extends Controller
 {
-    // Menampilkan formulir pembuatan pengguna
     public function create() 
     { 
-        return view('create_user'); // Pastikan Anda memiliki view 'create_user.blade.php'
+        return view('create_user', [
+            'kelas' => Kelas::all(),
+        ]); 
     }
 
     // Menyimpan data pengguna
     public function store(Request $request) 
     { 
         // Validasi input
-        $request->validate([
+        $validatedData = $request->validate([
             'nama' => 'required|string|max:255',
-            'kelas' => 'required|string|max:255',
-            'npm' => 'required|string|max:20',
+            'npm' => 'required|string|max:255',
+            'kelas_id' => 'required|exists:kelas,id', // Pastikan menggunakan kelas_id
         ]);
 
-        // Ambil data dari request
-        $data = [ 
-            'nama' => $request->input('nama'), 
-            'kelas' => $request->input('kelas'), 
-            'npm' => $request->input('npm'), 
-        ];
+        // Simpan pengguna ke dalam database
+        $user = UserModel::create($validatedData); // Pastikan Anda menggunakan model User
 
-        // Kirimkan data ke dalam view profil
-        return view('profile', $data); 
+        // Mengambil data kelas setelah disimpan
+        $user->load('kelas');
+
+        // Menyimpan data pengguna dalam session
+        session([
+            'nama' => $user->nama, 
+            'npm' => $user->npm, 
+            'kelas' => $user->kelas->nama_kelas ?? 'Kelas tidak ditemukan',
+        ]);
+
+        return redirect()->route('profile'); // Redirect ke route profile
     }
 
     // Menampilkan profil pengguna
     public function profile() 
     {
-        // Jika Anda ingin menampilkan data profil dari session
         return view('profile', [
             'nama' => session('nama'),
-            'kelas' => session('kelas'),
             'npm' => session('npm'),
+            'kelas' => session('kelas'),
         ]);
     }
 }
