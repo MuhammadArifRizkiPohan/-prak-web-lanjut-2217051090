@@ -47,25 +47,35 @@ class UserController extends Controller
     }
 
     // Menyimpan data pengguna
-    public function store(Request $request) 
-    { 
+    public function store(Request $request)
+    {
         // Validasi input
-        $validatedData = $request->validate([
+        $request->validate([
             'nama' => 'required|string|max:255',
             'npm' => 'required|string|max:255',
-            'kelas_id' => 'required|exists:kelas,id', // Pastikan menggunakan kelas_id
+            'kelas_id' => 'required|integer',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validasi untuk foto
         ]);
-
-        // Simpan pengguna ke dalam database menggunakan $this
-        $user = $this->userModel::create($validatedData); 
-        
-        return redirect()->to('/users'); 
-
-        
-
-       
+    
+        // Meng-handle upload foto
+        if ($request->hasFile('foto')) {
+            $foto = $request->file('foto');
+            // Menyimpan file foto di folder 'images' di storage
+            $fotoPath = $foto->store('images', 'public'); // Menggunakan storage
+        } else {
+            $fotoPath = null; // Jika tidak ada file yang diupload
+        }
+    
+        // Menyimpan data ke database termasuk path foto
+        $this->userModel->create([
+            'nama' => $request->input('nama'),
+            'npm' => $request->input('npm'),
+            'kelas_id' => $request->input('kelas_id'),
+            'foto' => $fotoPath, // Menyimpan path foto
+        ]);
+    
+        return redirect()->to('/user')->with('success', 'User  berhasil ditambahkan');
     }
-
     // Menampilkan profil pengguna
     public function profile() 
     {
