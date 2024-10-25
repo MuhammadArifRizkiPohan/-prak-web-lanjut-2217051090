@@ -59,31 +59,39 @@
 @extends('layouts.app')
 
 @section('content')
-<form action="{{ route('user.store') }}" method="POST">
-    @csrf
+<div class="container">
+    <h1>Tambah Pengguna</h1>
+    <form action="{{ route('user.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
 
-    <div class="form-group">
-        <label for="nama">Nama:</label>
-        <input type="text" name="nama" id="nama" class="form-control" required minlength="3" maxlength="255">
-    </div>
+        <div class="form-group">
+            <label for="nama">Nama:</label>
+            <input type="text" name="nama" id="nama" class="form-control" required minlength="3" maxlength="255">
+        </div>
 
-    <div class="form-group">
-        <label for="npm">NPM:</label>
-        <input type="text" name="npm" id="npm" class="form-control" required pattern="\d{8}" title="NPM harus terdiri dari 8 digit angka">
-    </div>
+        <div class="form-group">
+            <label for="npm">NPM:</label>
+            <input type="text" name="npm" id="npm" class="form-control" required pattern="\d{8}" title="NPM harus terdiri dari 8 digit angka">
+        </div>
 
-    <div class="form-group">
-        <label for="kelas_id">Kelas:</label>
-        <select name="kelas_id" id="kelas_id" class="form-control" required>
-            <option value="">Pilih Kelas</option>
-            @foreach ($kelas as $kelasItem)
-                <option value="{{ $kelasItem->id }}">{{ $kelasItem->nama_kelas }}</option>
-            @endforeach
-        </select>
-    </div>
+        <div class="form-group">
+            <label for="kelas_id">Kelas:</label>
+            <select name="kelas_id" id="kelas_id" class="form-control" required>
+                <option value="">Pilih Kelas</option>
+                @foreach ($kelas as $kelasItem)
+                    <option value="{{ $kelasItem->id }}">{{ $kelasItem->nama_kelas }}</option>
+                @endforeach
+            </select>
+        </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+        <div class="form-group">
+            <label for="foto">Foto:</label>
+            <input type="file" name="foto" id="foto" class="form-control" accept="image/*">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
 @endsection
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
