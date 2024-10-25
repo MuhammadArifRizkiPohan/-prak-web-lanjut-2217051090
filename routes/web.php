@@ -37,3 +37,4 @@ Route::get('/users', [UserController::class, 'index'])->name('user.list');
 Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
 // Rute untuk menghapus pengguna
 Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+Route::resource('users', UserController::class);
