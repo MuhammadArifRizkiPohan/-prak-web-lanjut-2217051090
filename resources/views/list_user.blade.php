@@ -8,8 +8,15 @@
 </head>
 <body>
     <div class="container mt-5">
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <h1 class="mb-4">{{ $title }}</h1>
-        <a href="{{ route('user.create') }}" class="btn btn-primary mb-3">Tambah User</a>
+        <a href="{{ route('users.create') }}" class="btn btn-primary mb-3">Tambah User</a>
+        
         <table class="table table-striped table-bordered">
             <thead class="thead-dark">
                 <tr>
@@ -17,26 +24,38 @@
                     <th>Nama</th>
                     <th>NPM</th>
                     <th>Kelas</th>
+                    <th>Foto</th> <!-- Kolom untuk foto -->
                     <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($users as $user)
+                @forelse ($users as $user)
                     <tr>
                         <td>{{ $user->id }}</td>
                         <td>{{ $user->nama }}</td>
                         <td>{{ $user->npm }}</td>
                         <td>{{ $user->kelas->nama_kelas ?? 'Kelas tidak ditemukan' }}</td>
                         <td>
-                            <a href="{{ route('user.edit', $user->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{ route('user.destroy', $user->id) }}" method="POST" style="display:inline;">
+                            @if ($user->foto)
+                                <img src="{{ asset('storage/' . $user->foto) }}" alt="Foto Pengguna" class="img-thumbnail" style="max-width: 50px;">
+                            @else
+                                <span>Tidak ada foto</span>
+                            @endif
+                        </td>
+                        <td>
+                            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                            <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
                             </form>
                         </td>
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="6" class="text-center">Tidak ada pengguna ditemukan.</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
