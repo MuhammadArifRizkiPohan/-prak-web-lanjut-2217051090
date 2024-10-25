@@ -18,13 +18,22 @@ use App\Http\Controllers\UserController; // Pastikan Anda mengimpor UserControll
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Rute untuk menampilkan profil pengguna
 Route::get('/profile', [UserController::class, 'profile'])->name('profile');
 
 // Rute untuk menampilkan formulir pembuatan pengguna
-Route::get('/user/create', [UserController::class, 'create']);
+Route::get('/user/create', [UserController::class, 'create'])->name('user.create');
 
 // Rute untuk menyimpan data pengguna (POST request)
 Route::post('/user/store', [UserController::class, 'store'])->name('user.store');
 
 // Rute untuk menampilkan profil pengguna
 Route::get('/user/profile', [UserController::class, 'profile']);
+
+// Rute untuk menampilkan daftar pengguna
+Route::get('/users', [UserController::class, 'index'])->name('user.list');
+// Rute untuk menampilkan formulir edit pengguna
+Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
+// Rute untuk menghapus pengguna
+Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');

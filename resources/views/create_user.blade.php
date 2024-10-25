@@ -56,10 +56,12 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Create User</h1>
-        <form action="{{ route('user.store') }}" method="POST" onsubmit="return validateForm()">
+@extends('layouts.app')
+
+@section('content')
+<form action="{{ route('user.store') }}" method="POST">
     @csrf
+
     <div class="form-group">
         <label for="nama">Nama:</label>
         <input type="text" name="nama" id="nama" class="form-control" required minlength="3" maxlength="255">
@@ -82,8 +84,7 @@
 
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
-
-    </div>
+@endsection
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
