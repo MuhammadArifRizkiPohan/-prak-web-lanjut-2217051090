@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Kelas; 
+use App\Models\Jurusan;
 use App\Models\User; 
 use App\Models\UserModel;
 use Illuminate\Support\Facades\Storage;
@@ -13,12 +14,14 @@ class UserController extends Controller
     // Mendeklarasikan properti publik untuk model
     public $userModel; 
     public $kelasModel; 
+    public $jurusan;
 
     // Konstruktor untuk menginisialisasi model
     public function __construct() 
     { 
         $this->userModel = new UserModel(); 
         $this->kelasModel = new Kelas(); 
+        $this->jurusan = new Jurusan();
     }
     public function index() 
 { 
@@ -39,10 +42,13 @@ class UserController extends Controller
     public function create() 
     { 
         // Mengambil semua kelas dari database menggunakan $this
-        $kelas = $this->kelasModel::all(); // Ambil semua kelas
-        $data = [ 
+        $kelas = $this->kelasModel::all();
+        // Ambil semua kelas
+        $data 
+        = [ 
             'title' => 'Create User', // Tambahkan judul halaman
             'kelas' => $kelas, 
+            
         ]; 
         return view('create_user', $data); 
     }
@@ -55,8 +61,10 @@ class UserController extends Controller
         'nama' => 'required|string|max:255',
         'npm' => 'required|string|max:255',
         'kelas_id' => 'required|integer',
+        'jurusan_id' => 'required/integer',
         'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
     ]);
+    
 
     // Meng-handle upload foto
     $fotoPath = null; // Inisialisasi fotoPath
@@ -71,7 +79,9 @@ class UserController extends Controller
         'nama' => $request->input('nama'),
         'npm' => $request->input('npm'),
         'kelas_id' => $request->input('kelas_id'),
+
         'foto' => $fotoPath, // Menyimpan path foto
+        
     ]);
 
     // Redirect ke halaman daftar pengguna setelah berhasil menyimpan

@@ -10,7 +10,7 @@ class Kelas extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
-    protected $table = 'kelas'; // Tambahkan titik koma di akhir
+    protected $table = 'kelas'; 
 
     // Relasi ke model User
     public function users() 
